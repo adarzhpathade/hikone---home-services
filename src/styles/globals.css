@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #EEEFEA;
+  --color-canvas-surface: #E5E6E1;
+  --color-canvas-surface-hover: #DFE0DA;
+  --color-canvas-elevated: #F5F6F2;
+
+  --color-ink: #0F100E;
+  --color-ink-secondary: #6B6C67;
+  --color-ink-muted: #9E9F99;
+  --color-ink-inverted: #EEEFEA;
+
+  --color-hairline: #D8D9D3;
+  --color-hairline-subtle: #E3E4DF;
+  --color-hairline-strong: #0F100E;
+
+  --color-accent-indigo: #2D4263;
+  --color-accent-slate: #4D6A94;
+  --color-accent-terracotta: #A96A4B;
+  --color-accent-kraft: #A48A6C;
+
+  --color-state-success: #3E6B48;
+  --color-state-warning: #C28535;
+  --color-state-error: #A83E3E;
+  --color-state-info: #2D4263;
+
+  --font-display: var(--font-mona), sans-serif;
+  --font-sans: var(--font-inter), sans-serif;
+  --font-num: var(--font-manrope), sans-serif;
+
+  --radius-none: 0px;
+  --radius-subtle: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  --shadow-editorial: 0 20px 40px -15px rgba(15, 16, 14, 0.05);
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.02);
+  --shadow-drawer: 0 -10px 40px rgba(15, 16, 14, 0.08);
+}
+
+:root {
+  --canvas-base: #EEEFEA;
+  --canvas-surface: #E5E6E1;
+  --canvas-surface-hover: #DFE0DA;
+  --canvas-elevated: #F5F6F2;
+
+  --ink-primary: #0F100E;
+  --ink-secondary: #6B6C67;
+  --ink-muted: #9E9F99;
+  --ink-inverted: #EEEFEA;
+
+  --border-subtle: #E3E4DF;
+  --border-default: #D8D9D3;
+  --border-strong: #0F100E;
+
+  --accent-indigo: #2D4263;
+  --accent-slate: #4D6A94;
+  --accent-terracotta: #A96A4B;
+  --accent-kraft: #A48A6C;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}

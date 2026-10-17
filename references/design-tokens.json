@@ -1,0 +1,67 @@
+{
+  "name": "Hikone Editorial Minimalist Design Tokens",
+  "version": "1.0.0",
+  "description": "Extracted from references/screenshots/color ref.jpg for Urban on-demand platform",
+  "colors": {
+    "background": {
+      "base": "#EEEFEA",
+      "surface": "#E5E6E1",
+      "surfaceHover": "#DFE0DA",
+      "elevated": "#F5F6F2",
+      "card": "#E5E6E1"
+    },
+    "text": {
+      "primary": "#0F100E",
+      "secondary": "#6B6C67",
+      "muted": "#9E9F99",
+      "inverted": "#EEEFEA"
+    },
+    "border": {
+      "subtle": "#E3E4DF",
+      "default": "#D8D9D3",
+      "strong": "#0F100E"
+    },
+    "accent": {
+      "primary": "#0F100E",
+      "indigo": "#2D4263",
+      "terracotta": "#A96A4B",
+      "kraft": "#A48A6C",
+      "slate": "#4D6A94"
+    },
+    "state": {
+      "success": "#3E6B48",
+      "warning": "#C28535",
+      "error": "#A83E3E",
+      "info": "#2D4263"
+    }
+  },
+  "typography": {
+    "fonts": {
+      "display": "Mona Sans, Montserrat, sans-serif",
+      "body": "Inter, Manrope, sans-serif",
+      "mono": "ui-monospace, monospace"
+    },
+    "scale": {
+      "display": { "fontSize": "2.75rem", "lineHeight": "1.1", "letterSpacing": "-0.03em", "fontWeight": "600" },
+      "h1": { "fontSize": "2.25rem", "lineHeight": "1.15", "letterSpacing": "-0.02em", "fontWeight": "600" },
+      "h2": { "fontSize": "1.75rem", "lineHeight": "1.2", "letterSpacing": "-0.015em", "fontWeight": "600" },
+      "h3": { "fontSize": "1.25rem", "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "500" },
+      "body": { "fontSize": "0.9375rem", "lineHeight": "1.5", "letterSpacing": "-0.005em", "fontWeight": "400" },
+      "small": { "fontSize": "0.8125rem", "lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "400" },
+      "badge": { "fontSize": "0.6875rem", "lineHeight": "1.2", "letterSpacing": "0.08em", "fontWeight": "600", "textTransform": "uppercase" }
+    }
+  },
+  "radii": {
+    "none": "0px",
+    "subtle": "2px",
+    "sm": "4px",
+    "md": "8px",
+    "lg": "12px",
+    "full": "9999px"
+  },
+  "shadows": {
+    "editorial": "0 20px 40px -15px rgba(15, 16, 14, 0.05)",
+    "card": "0 2px 10px rgba(0, 0, 0, 0.02)",
+    "drawer": "0 -10px 40px rgba(15, 16, 14, 0.08)"
+  }
+}
