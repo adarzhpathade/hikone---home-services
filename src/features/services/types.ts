@@ -22,4 +22,6 @@ export interface ServiceItem {
   };
   description: string;
   inclusions?: string[];
+  tag?: string;
+  swatches?: string[];
 }

@@ -24,6 +24,7 @@ export function ServiceCatalogView({
   const [activeSort, setActiveSort] = useState<
     "default" | "price-asc" | "price-desc" | "rating"
   >("default");
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedService, setSelectedService] = useState<ServiceItem | null>(null);
   const [cartCount, setCartCount] = useState(0);
   const [isPending, startTransition] = useTransition();
@@ -48,21 +49,26 @@ export function ServiceCatalogView({
       <SiteHeader cartCount={cartCount} />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-6 sm:px-10 lg:px-12 pt-6 sm:pt-8">
-        {/* Category & Sorting Subheader */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 lg:px-12 pt-6 sm:pt-8">
+        {/* Category Heading & Hairline Toolbar */}
         <CategoryBar
           categories={categories}
           activeCategory={activeCategory}
           onSelectCategory={setActiveCategory}
           activeSort={activeSort}
           onSelectSort={setActiveSort}
+          itemCount={services.length}
+          viewMode={viewMode}
+          onChangeViewMode={setViewMode}
         />
 
-        {/* 3-Column Service Grid */}
+        {/* Continuous Hairline Grid */}
         <ServiceGrid
           services={services}
           isLoading={isPending}
           onSelectService={(service) => setSelectedService(service)}
+          onAddToCart={handleAddToCart}
+          viewMode={viewMode}
         />
       </main>
 
