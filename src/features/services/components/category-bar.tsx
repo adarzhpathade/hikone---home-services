@@ -24,51 +24,49 @@ export function CategoryBar({
   onChangeViewMode,
 }: CategoryBarProps) {
   const currentCategory =
-    categories.find((c) => c.slug === activeCategory)?.name || "All Items";
+    categories.find((c) => c.slug === activeCategory)?.name || "All Services";
 
   return (
     <div className="w-full mb-6">
       {/* Category Heading & Large Tabular Count */}
-      <div className="flex items-baseline justify-between mb-8 sm:mb-10">
-        <h1 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl uppercase tracking-wider text-ink">
+      <div className="flex items-baseline justify-between mb-4 sm:mb-8">
+        <h1 className="font-display font-bold text-xl sm:text-3xl md:text-4xl uppercase tracking-wider text-ink">
           {currentCategory}
         </h1>
-        <span className="font-display font-normal text-2xl sm:text-3xl md:text-4xl text-ink font-tabular">
+        <span className="font-display font-normal text-xl sm:text-3xl md:text-4xl text-ink font-tabular">
           {itemCount < 10 ? `0${itemCount}` : itemCount}
         </span>
       </div>
 
-      {/* Hairline Divider Toolbar */}
-      <div className="border-y border-hairline py-3 flex items-center justify-between text-[11px] sm:text-xs">
-        {/* Left: Filter & Category Selector */}
-        <div className="flex items-center gap-6 sm:gap-8">
-          <div className="flex items-center gap-1.5 text-ink font-medium cursor-pointer">
-            <span className="font-sans">Filter</span>
-            <span className="text-[9px] text-ink-secondary">▾</span>
-          </div>
+      {/* Mobile-first Horizontal Category Switcher */}
+      <nav
+        aria-label="Service categories"
+        className="flex items-center gap-5 sm:gap-7 overflow-x-auto pb-2 mb-3 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0"
+      >
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat.slug;
+          return (
+            <button
+              key={cat.id}
+              onClick={() => onSelectCategory(cat.slug)}
+              className={`font-sans text-xs sm:text-[13px] tracking-tight transition-colors cursor-pointer whitespace-nowrap py-1 ${
+                isActive
+                  ? "text-ink font-semibold border-b-2 border-ink"
+                  : "text-ink-secondary hover:text-ink font-normal"
+              }`}
+            >
+              {cat.name}
+            </button>
+          );
+        })}
+      </nav>
 
-          {/* Quick Categories */}
-          <nav
-            aria-label="Filter categories"
-            className="hidden sm:flex items-center gap-5 overflow-x-auto scrollbar-none"
-          >
-            {categories.map((cat) => {
-              const isActive = activeCategory === cat.slug;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => onSelectCategory(cat.slug)}
-                  className={`font-sans tracking-tight transition-colors cursor-pointer ${
-                    isActive
-                      ? "text-ink font-semibold underline underline-offset-4"
-                      : "text-ink-secondary hover:text-ink font-normal"
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              );
-            })}
-          </nav>
+      {/* Hairline Divider Toolbar */}
+      <div className="border-y border-hairline py-2.5 sm:py-3 flex items-center justify-between text-[11px] sm:text-xs">
+        {/* Left: Filter label */}
+        <div className="flex items-center gap-1.5 text-ink font-medium">
+          <span className="font-sans">Filter</span>
+          <span className="text-[9px] text-ink-secondary">▾</span>
         </div>
 
         {/* Center: View Switcher Icons (:: grid vs ≡ list) */}
@@ -116,7 +114,7 @@ export function CategoryBar({
         {/* Right: Sort by Dropdown */}
         <div className="flex items-center">
           <label htmlFor="service-sorting" className="sr-only">
-            Sort items
+            Sort services
           </label>
           <div className="relative inline-flex items-center gap-1 cursor-pointer text-ink font-medium">
             <span className="font-sans text-[11px] sm:text-xs text-ink-secondary">
@@ -135,7 +133,7 @@ export function CategoryBar({
               <option value="default">Default</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
-              <option value="rating">Popularity</option>
+              <option value="rating">Rating</option>
             </select>
             <span className="pointer-events-none absolute right-0 text-[9px] text-ink-secondary">
               ▾

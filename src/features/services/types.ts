@@ -14,14 +14,14 @@ export interface ServiceItem {
   currency: string;
   duration: string;
   rating: number;
-  reviewCount: number;
-  image: string;
+  reviewCount: string | number;
+  unitPriceLabel?: string;
+  image?: string;
+  colorTone?: string;
   badge?: {
     label: string;
     variant: "indigo" | "terracotta" | "kraft";
   };
   description: string;
   inclusions?: string[];
-  tag?: string;
-  swatches?: string[];
 }
