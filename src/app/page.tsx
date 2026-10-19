@@ -1,56 +1,23 @@
-import { Suspense } from "react";
-import { serviceApi } from "@/features/services/api";
-import { ServiceCatalogView } from "@/features/services/components/service-catalog-view";
-import { SiteHeader } from "@/components/navigation/site-header";
-import { SiteFooter } from "@/components/navigation/site-footer";
+import { cacheLife } from "next/cache";
+import { HomeView } from "@/features/home/components/home-view";
 
 export const metadata = {
-  title: "Services Catalog — Hikone Editorial",
+  title: "Hikone — On-Demand Home Appliance Services & Repair",
   description:
-    "Curated architectural and lifestyle services presented in Japanese-Scandinavian minimalism.",
+    "Precision cooling care, deep sanitization, and certified appliance repairs delivered with Japanese-Scandinavian editorial excellence.",
 };
 
-async function CatalogData() {
-  const [categories, services] = await Promise.all([
-    serviceApi.getCategories(),
-    serviceApi.getServices(),
-  ]);
-
-  return (
-    <ServiceCatalogView
-      initialCategories={categories}
-      initialServices={services}
-    />
-  );
+async function getHomeData() {
+  "use cache";
+  cacheLife("hours");
+  return {};
 }
 
-function CatalogSkeleton() {
-  return (
-    <div className="min-h-screen flex flex-col bg-canvas text-ink">
-      <SiteHeader cartCount={0} />
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 lg:px-12 pt-6 sm:pt-8">
-        <div className="h-8 w-48 bg-canvas-surface rounded mb-4 animate-pulse" />
-        <div className="h-10 w-full border-y border-hairline mb-6 animate-pulse" />
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-hairline">
-          {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="border-r border-b border-hairline p-5 flex flex-col animate-pulse">
-              <div className="aspect-[16/10] sm:aspect-[4/3] w-full bg-canvas-surface rounded-sm mb-4" />
-              <div className="h-4 w-20 bg-canvas-surface rounded mb-2" />
-              <div className="h-3.5 w-3/4 bg-canvas-surface rounded mb-3" />
-              <div className="h-3 w-1/2 bg-canvas-surface rounded" />
-            </div>
-          ))}
-        </div>
-      </main>
-      <SiteFooter />
-    </div>
-  );
+async function HomeData() {
+  await getHomeData();
+  return <HomeView />;
 }
 
-export default function ServicesPage() {
-  return (
-    <Suspense fallback={<CatalogSkeleton />}>
-      <CatalogData />
-    </Suspense>
-  );
+export default function HomePage() {
+  return <HomeData />;
 }

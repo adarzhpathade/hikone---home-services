@@ -1,20 +1,61 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { MenuIcon } from "./menu-icon";
+import { SearchDialog } from "./search-dialog";
+
+// The menu chunk is only fetched the first time it is opened.
+const MobileMenu = dynamic(() =>
+  import("./mobile-menu").then((mod) => mod.MobileMenu),
+);
 
 interface SiteHeaderProps {
-  cartCount?: number;
+  onCartClick?: () => void;
 }
 
-export function SiteHeader({ cartCount = 0 }: SiteHeaderProps) {
+export function SiteHeader({ onCartClick }: SiteHeaderProps) {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [menuRequested, setMenuRequested] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Global keyboard shortcut: Cmd+K / Ctrl+K to toggle search
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   return (
-    <header className="w-full bg-canvas sticky top-0 z-40 transition-colors">
-      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 h-20 flex items-center justify-between">
-        {/* Brand & Menu Toggle */}
-        <div className="flex items-center gap-6">
+    <>
+      <header
+        className="w-full bg-canvas/92 backdrop-blur-md sticky top-0 z-40 border-b border-hairline/40 transition-colors"
+        style={{ viewTransitionName: "site-header" }}
+      >
+        <div className="max-w-6xl mx-auto px-4 sm:px-10 lg:px-12 h-16 sm:h-20 grid grid-cols-[1fr_auto_1fr] items-center md:flex md:justify-between">
+          <button
+            ref={menuButtonRef}
+            onClick={() => {
+              setMenuRequested(true);
+              setMobileMenuOpen(true);
+            }}
+            aria-label="Open navigation menu"
+            aria-haspopup="dialog"
+            aria-expanded={mobileMenuOpen}
+            className="group relative -ml-3 h-11 w-11 justify-self-start text-ink cursor-pointer md:hidden focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink"
+          >
+            <MenuIcon open={false} />
+          </button>
+
           <Link
             href="/"
             className="font-display font-bold text-lg sm:text-xl tracking-wider text-ink uppercase"
@@ -22,110 +63,87 @@ export function SiteHeader({ cartCount = 0 }: SiteHeaderProps) {
             Hikone
           </Link>
 
-          {/* Minimal 2-line menu icon */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="Toggle navigation menu"
-            className="flex flex-col justify-center gap-1.5 w-6 h-6 text-ink hover:opacity-70 transition-opacity cursor-pointer md:hidden"
+          {/* Desktop Nav Links */}
+          <nav
+            aria-label="Main navigation"
+            className="hidden md:flex items-center gap-8 text-[11px] uppercase font-display font-medium tracking-widest"
           >
-            <span className="block h-[1.5px] w-5 bg-ink" />
-            <span className="block h-[1.5px] w-3 bg-ink" />
-          </button>
-        </div>
-
-        {/* Desktop Nav Links */}
-        <nav
-          aria-label="Main navigation"
-          className="hidden md:flex items-center gap-8 text-[11px] uppercase font-display font-medium tracking-widest text-ink-secondary"
-        >
-          <Link href="/" className="hover:text-ink transition-colors">
-            Home
-          </Link>
-          <Link href="#pages" className="hover:text-ink transition-colors">
-            Pages
-          </Link>
-          <Link href="#work" className="hover:text-ink transition-colors">
-            Work
-          </Link>
-          <Link href="#blog" className="hover:text-ink transition-colors">
-            Blog
-          </Link>
-          <Link href="/" className="text-ink font-semibold transition-colors">
-            Shop
-          </Link>
-          <Link href="#features" className="hover:text-ink transition-colors">
-            Features
-          </Link>
-        </nav>
-
-        {/* Cart Bag Icon with tabular counter */}
-        <div className="flex items-center">
-          <button
-            aria-label={`View cart with ${cartCount} items`}
-            className="flex items-center gap-1.5 text-ink hover:text-ink-secondary transition-colors cursor-pointer"
-          >
-            <svg
-              className="w-4 h-4 stroke-[1.5]"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+            <Link
+              href="/"
+              className={`transition-colors ${
+                pathname === "/"
+                  ? "text-ink font-semibold"
+                  : "text-ink-secondary hover:text-ink"
+              }`}
             >
-              <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <path d="M16 10a4 4 0 0 1-8 0" />
-            </svg>
-            <span className="font-num font-tabular text-xs font-semibold">
-              {cartCount}
-            </span>
-          </button>
-        </div>
-      </div>
+              Home
+            </Link>
+            <Link
+              href="/#service-hubs"
+              className={`transition-colors ${
+                pathname === "/ac" ||
+                pathname === "/fridge" ||
+                pathname.startsWith("/services")
+                  ? "text-ink font-semibold"
+                  : "text-ink-secondary hover:text-ink"
+              }`}
+            >
+              Services
+            </Link>
+            <Link
+              href="#about"
+              className="text-ink-secondary hover:text-ink transition-colors"
+            >
+              About
+            </Link>
+            <Link
+              href="#contact"
+              className="text-ink-secondary hover:text-ink transition-colors"
+            >
+              Contact
+            </Link>
+          </nav>
 
-      {/* Mobile Drawer */}
-      {mobileMenuOpen && (
-        <nav
-          aria-label="Mobile navigation"
-          className="md:hidden border-b border-hairline-subtle bg-canvas px-6 py-4 flex flex-col gap-3 text-xs uppercase font-display tracking-widest"
-        >
-          <Link
-            href="/"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-ink font-semibold py-1"
-          >
-            Shop (Catalog)
-          </Link>
-          <Link
-            href="#pages"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-ink-secondary hover:text-ink py-1"
-          >
-            Pages
-          </Link>
-          <Link
-            href="#work"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-ink-secondary hover:text-ink py-1"
-          >
-            Work
-          </Link>
-          <Link
-            href="#blog"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-ink-secondary hover:text-ink py-1"
-          >
-            Blog
-          </Link>
-          <Link
-            href="#features"
-            onClick={() => setMobileMenuOpen(false)}
-            className="text-ink-secondary hover:text-ink py-1"
-          >
-            Features
-          </Link>
-        </nav>
+          {/* Search Trigger */}
+          <div className="flex items-center justify-self-end">
+            <button
+              onClick={() => setSearchOpen(true)}
+              aria-label="Search services"
+              className="relative -mr-3 md:mr-0 flex h-11 items-center justify-center gap-2 px-2 text-ink hover:opacity-70 transition-opacity cursor-pointer focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-ink"
+            >
+              <svg
+                aria-hidden="true"
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <kbd className="hidden md:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-ink-muted border border-hairline rounded bg-canvas-surface/40 select-none">
+                ⌘K
+              </kbd>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {menuRequested && (
+        <MobileMenu
+          open={mobileMenuOpen}
+          onOpenChange={setMobileMenuOpen}
+          onCartClick={onCartClick}
+          onSearchClick={() => setSearchOpen(true)}
+          triggerRef={menuButtonRef}
+        />
       )}
-    </header>
+
+      {/* Accessible Search Dialog */}
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+    </>
   );
 }

@@ -1,85 +1,69 @@
 "use client";
 
-import type { ServiceItem } from "../types";
+import type { ServiceCategory, ServiceItem } from "../types";
 import { ServiceCard } from "./service-card";
 
-interface ServiceGridProps {
+export interface ServiceSection {
+  category: ServiceCategory;
   services: ServiceItem[];
-  isLoading?: boolean;
-  onSelectService?: (service: ServiceItem) => void;
-  onAddToCart?: (service: ServiceItem) => void;
-  viewMode?: "grid" | "list";
 }
 
-export function ServiceGrid({
-  services,
-  isLoading = false,
-  onSelectService,
-  onAddToCart,
-  viewMode = "grid",
-}: ServiceGridProps) {
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border-t border-l border-hairline">
-        {Array.from({ length: 6 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="border-r border-b border-hairline p-4 sm:p-5 flex flex-col animate-pulse"
-          >
-            <div className="flex justify-between items-center mb-2.5">
-              <div className="h-3 w-3 bg-canvas-surface rounded-full" />
-              <div className="h-3 w-16 bg-canvas-surface rounded" />
-            </div>
-            <div className="aspect-[16/10] sm:aspect-[4/3] w-full bg-canvas-surface rounded-sm mb-4" />
-            <div className="flex justify-between items-center mb-2">
-              <div className="h-4 w-16 bg-canvas-surface rounded" />
-              <div className="h-6 w-6 bg-canvas-surface rounded-sm" />
-            </div>
-            <div className="h-3.5 w-3/4 bg-canvas-surface rounded mb-2" />
-            <div className="h-3 w-1/2 bg-canvas-surface rounded mb-4" />
-            <div className="pt-3 border-t border-hairline-subtle space-y-1.5">
-              <div className="h-2.5 w-5/6 bg-canvas-surface rounded" />
-              <div className="h-2.5 w-4/6 bg-canvas-surface rounded" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
-  }
+interface ServiceGridProps {
+  sections: ServiceSection[];
+  isLoading?: boolean;
+}
 
-  if (services.length === 0) {
+export function ServiceGrid({ sections, isLoading = false }: ServiceGridProps) {
+  if (sections.length === 0) {
     return (
       <div className="border border-hairline py-16 text-center bg-canvas">
         <p className="font-sans text-xs text-ink-secondary">
-          No services found in this category.
+          No services found.
         </p>
       </div>
     );
   }
 
-  const gridClass =
-    viewMode === "grid"
-      ? "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-      : "grid grid-cols-1";
+  const gridClass = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
 
   return (
-    <section aria-label="Available services">
-      <div
-        className={`${gridClass} border-t border-l border-hairline bg-hairline/20`}
-      >
-        {services.map((service) => (
-          <div
-            key={service.id}
-            className="border-r border-b border-hairline bg-canvas flex flex-col"
-          >
-            <ServiceCard
-              service={service}
-              onSelect={onSelectService}
-              onAddToCart={onAddToCart}
-            />
+    <div
+      aria-busy={isLoading}
+      className={`space-y-16 sm:space-y-24 lg:space-y-28 transition-opacity duration-200 motion-reduce:transition-none ${
+        isLoading ? "opacity-60" : ""
+      }`}
+    >
+      {sections.map(({ category, services }) => (
+        <section
+          key={category.id}
+          id={`section-${category.slug}`}
+          aria-labelledby={`category-${category.slug}`}
+          className="scroll-mt-40 sm:scroll-mt-48"
+        >
+          <div className="mb-5 sm:mb-7 flex items-baseline justify-between gap-4">
+            <h2
+              id={`category-${category.slug}`}
+              className="font-display text-xl sm:text-2xl md:text-3xl font-bold uppercase tracking-wider text-ink"
+            >
+              {category.name}
+            </h2>
+            <p className="font-num font-tabular text-xs sm:text-sm text-ink-secondary font-medium">
+              {services.length} {services.length === 1 ? "service" : "services"}
+            </p>
           </div>
-        ))}
-      </div>
-    </section>
+
+          <div className={`${gridClass} pt-px pl-px`}>
+            {services.map((service) => (
+              <div
+                key={service.id}
+                className="-mt-px -ml-px border border-hairline bg-canvas flex flex-col"
+              >
+                <ServiceCard service={service} />
+              </div>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
   );
 }

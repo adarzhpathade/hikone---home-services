@@ -1,12 +1,26 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { fontMona, fontManrope, fontInter } from "@/lib/fonts";
+import { NavigationSettled } from "@/components/navigation/navigation-settled";
 import { MotionProvider } from "@/components/providers/motion-provider";
 import "@/styles/globals.css";
 
+export const viewport: Viewport = {
+  themeColor: "#EEEFEA",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: "cover",
+};
+
 export const metadata: Metadata = {
-  title: "Urban — High-End On-Demand Services",
-  description: "Curated architectural service platform for home and personal care.",
+  title: "Hikone — High-End On-Demand Home Appliance Services",
+  description: "Curated architectural service platform for precision appliance care and repair.",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Hikone",
+  },
 };
 
 export default function RootLayout({
@@ -21,6 +35,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col bg-canvas text-ink font-sans">
         <MotionProvider>{children}</MotionProvider>
+        <NavigationSettled />
       </body>
     </html>
   );

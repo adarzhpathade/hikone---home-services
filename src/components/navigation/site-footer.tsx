@@ -1,113 +1,89 @@
 import Link from "next/link";
+import { TransitionLink } from "@/components/ui/transition-link";
+import { BackToTop } from "./back-to-top";
+import { FOOTER_GROUPS, FOOTER_TAGLINE } from "./footer-links";
+
+const CELL_CLASS = "-mt-px -ml-px border border-hairline p-4 sm:p-5";
+
+const LINK_CLASS =
+  "flex min-h-11 items-center font-sans text-sm text-ink transition-colors hover:text-ink-secondary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink motion-reduce:transition-none";
 
 export function SiteFooter() {
   return (
-    <footer className="w-full bg-canvas border-t border-hairline-subtle mt-24 sm:mt-32">
-      <div className="max-w-6xl mx-auto px-6 sm:px-10 lg:px-12 pt-16 sm:pt-20 pb-12">
-        {/* Large Editorial Headline */}
-        <div className="mb-14 sm:mb-20">
-          <h2 className="font-display font-bold text-2xl sm:text-3xl md:text-4xl uppercase tracking-tight text-ink leading-tight">
-            Don&apos;t be shy,
-            <br />
-            just say hi!
-          </h2>
-        </div>
-
-        {/* 4 Editorial Info Columns */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 sm:gap-10 pb-16 sm:pb-20 text-[11px] sm:text-xs font-sans">
-          {/* Column 1 */}
-          <div className="space-y-3">
-            <h3 className="font-display font-semibold uppercase tracking-wider text-ink text-[11px]">
-              San Diego
-            </h3>
-            <p className="text-ink-secondary leading-relaxed">
-              935 Ashcraft Court,
-              <br />
-              San Diego CA, 92104
-            </p>
-          </div>
-
-          {/* Column 2 */}
-          <div className="space-y-3">
-            <h3 className="font-display font-semibold uppercase tracking-wider text-ink text-[11px]">
-              Start a Conversation
-            </h3>
-            <div className="flex flex-col space-y-1 text-ink-secondary">
-              <a
-                href="mailto:concierge@urban-services.com"
-                className="hover:text-ink transition-colors"
-              >
-                concierge@urban-services.com
-              </a>
-              <span className="font-num">+1.858.755.6922</span>
-            </div>
-          </div>
-
-          {/* Column 3 */}
-          <div className="space-y-3">
-            <h3 className="font-display font-semibold uppercase tracking-wider text-ink text-[11px]">
-              Career
-            </h3>
-            <p className="text-ink-secondary leading-relaxed">
-              Work somewhere you can be proud of!
-            </p>
+    <footer className="mt-14 w-full overflow-hidden border-t border-hairline bg-canvas sm:mt-20">
+      <div className="mx-auto w-full max-w-7xl px-4 pt-10 sm:px-8 sm:pt-14 lg:px-12">
+        {/* Bordered cells, the same grid language as the cards */}
+        <nav
+          aria-label="Footer"
+          className="grid grid-cols-2 pt-px pl-px md:grid-cols-4"
+        >
+          <div className={`${CELL_CLASS} col-span-2 md:col-span-1`}>
             <Link
-              href="#careers"
-              className="inline-block text-ink font-medium underline underline-offset-4 hover:opacity-75 transition-opacity"
+              href="/"
+              className="font-display text-lg font-bold uppercase tracking-wider text-ink"
             >
-              View Current Opportunities
+              Hikone
             </Link>
+            <p className="mt-3 max-w-[16rem] font-sans text-sm leading-relaxed text-ink-secondary">
+              {FOOTER_TAGLINE}
+            </p>
           </div>
 
-          {/* Column 4 */}
-          <div className="space-y-3">
-            <h3 className="font-display font-semibold uppercase tracking-wider text-ink text-[11px] sr-only">
-              Social Links
-            </h3>
-            <ul className="space-y-2 font-display uppercase tracking-wider text-[11px] font-semibold text-ink">
-              <li>
-                <a href="#facebook" className="hover:text-ink-secondary transition-colors">
-                  Facebook
-                </a>
-              </li>
-              <li>
-                <a href="#twitter" className="hover:text-ink-secondary transition-colors">
-                  Twitter
-                </a>
-              </li>
-              <li>
-                <a href="#instagram" className="hover:text-ink-secondary transition-colors">
-                  Instagram
-                </a>
-              </li>
-              <li>
-                <a href="#behance" className="hover:text-ink-secondary transition-colors">
-                  Behance
-                </a>
-              </li>
-            </ul>
-          </div>
+          {FOOTER_GROUPS.map((group, index) => (
+            <div
+              key={group.id}
+              className={`${CELL_CLASS} ${
+                index === FOOTER_GROUPS.length - 1
+                  ? "col-span-2 md:col-span-1"
+                  : ""
+              }`}
+            >
+              <h2 className="mb-2 font-display text-[11px] font-semibold uppercase tracking-widest text-ink-secondary">
+                {group.label}
+              </h2>
+              <ul>
+                {group.links.map((link) => (
+                  <li key={link.label}>
+                    {link.href ? (
+                      <TransitionLink
+                        href={link.href}
+                        direction="forward"
+                        className={LINK_CLASS}
+                      >
+                        {link.label}
+                      </TransitionLink>
+                    ) : (
+                      <span
+                        aria-disabled="true"
+                        className="flex min-h-11 items-center justify-between gap-2 font-sans text-sm text-ink-muted"
+                      >
+                        {link.label}
+                        <span className="font-num text-[10px] font-medium uppercase tracking-widest">
+                          Soon
+                        </span>
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
+
+        <div className="flex items-center justify-between gap-4 py-3">
+          <p className="font-sans text-xs text-ink-muted">
+            © Hikone. All rights reserved.
+          </p>
+          <BackToTop />
         </div>
 
-        {/* Sub-footer Bar */}
-        <div className="border-t border-hairline-subtle pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-ink-muted uppercase tracking-wider font-sans">
-          <div className="flex items-center gap-4">
-            <Link href="#terms" className="hover:text-ink transition-colors">
-              Terms & Conditions
-            </Link>
-            <Link href="#privacy" className="hover:text-ink transition-colors">
-              Privacy Policy
-            </Link>
-          </div>
-
-          <div className="text-ink-secondary font-medium lowercase">
-            urban.prototype
-          </div>
-
-          <div>
-            ©2026 Urban Platform. All rights reserved.
-          </div>
-        </div>
+        {/* Quiet oversized wordmark that closes the page */}
+        <p
+          aria-hidden="true"
+          className="select-none pt-4 pb-3 text-center font-display text-[clamp(4.5rem,24vw,20rem)] font-bold uppercase leading-[0.8] tracking-tight text-canvas-surface-hover sm:pt-8"
+        >
+          Hikone
+        </p>
       </div>
     </footer>
   );
