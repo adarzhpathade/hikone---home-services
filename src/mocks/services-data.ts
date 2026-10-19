@@ -16,6 +16,7 @@ export const MOCK_FRIDGE_CATEGORIES: ServiceCategory[] = [
 
 // AC thumbnails are named after the service slug. Fridge services share one photo.
 const acImage = (slug: string) => `/images/ac/${slug}.png`;
+const HOME_AC_IMAGE = "/images/home/home-ac.png";
 const FRIDGE_IMAGE = "/images/home/home-fridge.png";
 
 export const MOCK_CATALOG_SUMMARY: CatalogSummary = {
@@ -113,7 +114,7 @@ export const MOCK_AC_SERVICES: ServiceItem[] = [
     reviewCount: "930K",
     badge: { label: "Certified Pro", variant: "indigo" },
     colorTone: "#E0E2DC",
-    image: acImage("ac-not-cooling-inspection-repair-1-ac"),
+    image: HOME_AC_IMAGE,
     description: "Diagnosis of weak cooling, with the fault found and fixed on the spot where parts allow.",
     inclusions: [
       "Full cooling and airflow diagnosis",
@@ -134,7 +135,7 @@ export const MOCK_AC_SERVICES: ServiceItem[] = [
     reviewCount: "820K",
     badge: { label: "30-day warranty", variant: "indigo" },
     colorTone: "#E8E9E4",
-    image: acImage("gas-leak-fix-complete-refill-1-ac"),
+    image: HOME_AC_IMAGE,
     description: "Professional nitrogen pressure testing to locate microscopic leaks followed by genuine refrigerant refill.",
     inclusions: [
       "Electronic refrigerant leak detection",
@@ -176,7 +177,7 @@ export const MOCK_AC_SERVICES: ServiceItem[] = [
     reviewCount: "280K",
     badge: { label: "90-day warranty", variant: "indigo" },
     colorTone: "#E4E5DF",
-    image: acImage("ac-pcb-electronics-repair-1-ac"),
+    image: HOME_AC_IMAGE,
     description: "Board-level diagnosis and repair for ACs that won't switch on, reset themselves or ignore the remote.",
     inclusions: [
       "PCB and sensor fault diagnosis",
