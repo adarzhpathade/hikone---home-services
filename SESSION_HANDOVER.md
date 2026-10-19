@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-19
 **Workspace:** `E:\Projects\Products\Urban`
-**Status:** Four routes work: home (`/`), AC catalog (`/ac`), Fridge catalog (`/fridge`) and service detail (`/services/[slug]`), with a working cart. `tsc`, `npm run lint` and `next build` pass. All pages prerender (static). Everything is **uncommitted** on branch `master` (last commit: `88daeea`, about 39 changed or new paths).
+**Status:** Four routes work: home (`/`), AC catalog (`/ac`), Fridge catalog (`/fridge`) and service detail (`/services/[slug]`), with a working cart. `tsc`, `npm run lint` and `next build` pass. All pages prerender (static). Git repository configured on branch `main` and pushed to remote `origin` (`https://github.com/adarzhpathade/hikone---home-services.git`). Working tree clean, ready for Vercel deployment.
 
 ---
 
@@ -61,9 +61,10 @@ Zustand + `persist` (key `urban-cart`, `skipHydration: true`; pages call `persis
 
 ### Images (`public/images/`)
 - `home/home-ac.png`, `home/home-fridge.png`: hub card cutouts (transparent PNG 1536x1024, served as ~10KB WebP).
-- `ac/<service-slug>.png`: AC thumbnails by slug. **Present:** power-saver, foam-jet, anti-rust, not-cooling. **Missing (monogram fallback, 404 in the network log):** gas-leak-fix-complete-refill-1-ac, ac-water-leakage-fix-1-ac, ac-pcb-electronics-repair-1-ac, split-ac-installation-1-ac, split-ac-uninstallation-1-ac. READMEs in each folder list the names.
+- `ac/<service-slug>.png`: AC thumbnails by slug. All 9 AC services have photos.
+- `ac-not-cooling-inspection-repair-1-ac.png` and its duplicate copies were rejected by the user as poor quality. Replaced with `home/home-ac.png` (`HOME_AC_IMAGE` in `src/mocks/services-data.ts`).
 - All fridge services share `home/home-fridge.png` (`FRIDGE_IMAGE` constant in the mocks).
-- The user generates images with GPT using prompts given in chat (flat, transparent, muted warm palette, no shadow or text) and places them. `public/images/services/` holds unrelated leftover template images (unused).
+- `public/images/services/` holds unrelated leftover template images (unused).
 
 ### Shared helpers
 `lib/format.ts` (`formatPrice`, `getMonogram` which skips symbols like "&"), `lib/use-media-query.ts`, `lib/navigation-transition.ts`, `components/ui/bag-icon.tsx`, `transition-link.tsx`. `globals.css` has the `scrollbar-none` utility and all view-transition CSS.
@@ -85,14 +86,15 @@ Zustand + `persist` (key `urban-cart`, `skipHydration: true`; pages call `persis
 - `TrendingServices` (`features/home`) and `serviceApi.getTrendingServices` are unused.
 - The home page's `scroll-mt` and the services link `/#service-hubs` assume the hub section id `service-hubs`.
 
-## 7. Suggested next steps (none started)
-1. **Commit** in logical chunks (suggested: cart + detail page; catalog sections and thumbnails; navigation, menu, search, transitions; home page; footer; images). Nothing is committed.
-2. Add the 5 missing AC images (the user is generating them), then check the catalog at phone width.
-3. Replace About and Contact dead anchors with real pages or "Soon" states, and Terms/Privacy.
-4. Lift cart state so the menu's cart button works on detail pages.
-5. Booking step behind the cart's Continue button (`bookingApi`, `features/booking`).
-6. Move the home page content behind `serviceApi`; delete `service-detail-sheet.tsx`, `TrendingServices` and the compat stubs.
-7. Fridge-specific images and a real fridge category overview.
+## 7. Suggested next steps
+1. **Repository & Deploy**: Initial git commits pushed to `main` at `https://github.com/adarzhpathade/hikone---home-services.git` (COMPLETED).
+2. **AC & Fridge Thumbnails**: All 9 AC services and 8 fridge services have active images without missing 404s (COMPLETED).
+3. **Mobile & Theme Color**: Address bar theme-color `#EEEFEA` and safe-area insets configured (COMPLETED).
+4. Replace About and Contact dead anchors with real pages or "Soon" states, and Terms/Privacy.
+5. Lift cart state so the menu's cart button works on detail pages.
+6. Booking step behind the cart's Continue button (`bookingApi`, `features/booking`).
+7. Move the home page content behind `serviceApi`; delete `service-detail-sheet.tsx`, `TrendingServices` and the compat stubs.
+8. Fridge-specific images and a real fridge category overview.
 
 ## 8. Rules for the next agent
 - Follow `AGENTS.md` strictly (tokens, fonts, motion only transform/opacity, server components by default, service layer).
